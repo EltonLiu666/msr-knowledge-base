@@ -1,0 +1,125 @@
+/* Global styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f6f8;
+    color: #263238;
+    line-height: 1.6;
+}
+
+/* Headers */
+header {
+    background-color: #164e63;
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+header p {
+    margin-bottom: 0;
+    color: #dbeafe;
+}
+
+/* Main */
+main {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+main section h2 {
+    margin-top: 0;
+    color: #164e63;
+}
+
+/* Navs */
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+nav button {
+    flex: 1 1 180px;
+    padding: 12px 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background-color: white;
+    color: #164e63;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+nav button:hover {
+    background-color: #e2e8f0;
+}
+
+nav button.active {
+    background-color: #164e63;
+    border-color: #164e63;
+    color: white;
+}
+
+nav button:focus-visible {
+    outline: 3px solid #38bdf8;
+    outline-offset: 2px;
+}
+
+main section {
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 25px;
+}
+
+main section[hidden] {
+    display: none;
+}
+
+/* Adaption for narrow screens */
+@media (max-width: 600px) {
+    header {
+        padding: 20px 15px;
+    }
+
+    main {
+        margin: 15px auto;
+        padding: 0 10px;
+    }
+
+    main section {
+        padding: 15px;
+        overflow-x: auto;
+    }
+}
+
+/* table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background-color: #e2e8f0;
+    color: #164e63;
+}
+
+tr:nth-child(even) {
+    background-color: #f8fafc;
+}
