@@ -1,0 +1,31 @@
+
+name: CI Tests
+
+# Run the workflow whenever code is pushed or a PR is created.
+on:
+  push:
+  pull_request:
+
+# Grant only the permission needed to read repository contents.
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Run Automated Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      # Download the repository code to the runner.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Install Node.js to run the JavaScript tests.
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Run the four automated tests.
+      - name: Run tests
+        run: node --test tests/navigation.test.js
