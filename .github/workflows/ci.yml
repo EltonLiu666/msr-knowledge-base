@@ -1,12 +1,11 @@
 
 name: CI Tests
 
-# Run the workflow whenever code is pushed or a PR is created.
+# Run tests on pushes and pull requests.
 on:
   push:
   pull_request:
 
-# Grant only the permission needed to read repository contents.
 permissions:
   contents: read
 
@@ -16,16 +15,68 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Download the repository code to the runner.
+      # Check out the repository.
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Install Node.js to run the JavaScript tests.
+      # Configure the Node.js test environment.
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
 
-      # Run the four automated tests.
+      # Run the automated test suite.
       - name: Run tests
         run: node --test tests/navigation.test.js
+
+  deploy:
+    name: Deploy GitHub Pages
+    needs: test
+
+    # Deploy only after a successful push to main.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Prepare the static website for deployment.
+      - name: Build website
+        run: |
+          mkdir -p _site
+          cp -R styles scripts _site/
+
+          # Adjust asset paths for the deployed homepage.
+          sed -e 's#\.\./styles/#styles/#g' \
+              -e 's#\.\./scripts/#scripts/#g' \
+              src/index.html > _site/index.html
+
+      # Configure GitHub Pages.
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      # Upload the generated website.
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+      # Publish the website.
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
